@@ -18,7 +18,6 @@ public abstract class Move {
 
         public MajorMove(final Board board, final Piece movedPiece, final int destinationCoordinate) {
             super(board, movedPiece, destinationCoordinate);
-            // TODO Auto-generated constructor stub
         }
 
     }
