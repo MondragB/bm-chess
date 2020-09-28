@@ -15,7 +15,7 @@ public class Rook extends Piece {
 
     public final static int[] CANIDATE_MOVE_VECTOR_COORDINATES = { -8, -1, 1, 8 };
 
-    Rook(int piecePositon, Alliance pieceAlliance) {
+    public Rook(int piecePositon, Alliance pieceAlliance) {
         super(piecePositon, pieceAlliance);
     }
 
@@ -51,6 +51,11 @@ public class Rook extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.ROOK.toString();
     }
 
     private static boolean isFirstFileExlcusion(final int currentPosition, final int candidateOffset) {

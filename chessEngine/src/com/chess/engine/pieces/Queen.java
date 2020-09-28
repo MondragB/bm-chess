@@ -15,7 +15,7 @@ public class Queen extends Piece {
 
     public final static int[] CANIDATE_MOVE_VECTOR_COORDINATES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-    Queen(int piecePositon, Alliance pieceAlliance) {
+    public Queen(int piecePositon, Alliance pieceAlliance) {
         super(piecePositon, pieceAlliance);
     }
 
@@ -51,6 +51,11 @@ public class Queen extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.QUEEN.toString();
     }
 
     private static boolean isFirstFileExlcusion(final int currentPosition, final int candidateOffset) {

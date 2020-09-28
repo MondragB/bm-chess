@@ -15,7 +15,7 @@ public class Bishop extends Piece {
 
     public final static int[] CANIDATE_MOVE_VECTOR_COORDINATES = { -9, -7, 7, 9 };
 
-    Bishop(int piecePositon, Alliance pieceAlliance) {
+    public Bishop(int piecePositon, Alliance pieceAlliance) {
         super(piecePositon, pieceAlliance);
 
     }
@@ -52,6 +52,11 @@ public class Bishop extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.BISHOP.toString();
     }
 
     private static boolean isFirstFileExlcusion(final int currentPosition, final int candidateOffset) {
