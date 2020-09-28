@@ -28,14 +28,13 @@ public class Knight extends Piece {
             final int candidateDestinationCoordinate;
             candidateDestinationCoordinate = this.piecePositon + currentCandidateOffset;
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if (isFirstFileExlcusion(this.piecePositon, currentCandidateOffset)
                         || isSecondFileExlcusion(this.piecePositon, currentCandidateOffset)
                         || isSeventhFileExlcusion(this.piecePositon, currentCandidateOffset)
                         || isEighthFileExlcusion(this.piecePositon, currentCandidateOffset)) {
                     continue;
                 }
-
+                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if (!candidateDestinationTile.isTileOccupied()) {
                     legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                 } else {

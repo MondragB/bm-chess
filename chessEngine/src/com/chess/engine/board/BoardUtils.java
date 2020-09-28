@@ -7,6 +7,9 @@ public class BoardUtils {
     public static final boolean[] SEVENTH_FILE = initFile(6);
     public static final boolean[] EIGHTH_FILE = initFile(7);
 
+    public static final boolean[] SECOND_RANK = null;
+    public static final boolean[] SEVENTH_RANK = null;
+
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_PER_ROW = 8;
 
