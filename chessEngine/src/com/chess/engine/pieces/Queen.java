@@ -16,7 +16,7 @@ public class Queen extends Piece {
     public final static int[] CANIDATE_MOVE_VECTOR_COORDINATES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
     public Queen(int piecePositon, Alliance pieceAlliance) {
-        super(piecePositon, pieceAlliance);
+        super(PieceType.QUEEN, piecePositon, pieceAlliance);
     }
 
     @Override

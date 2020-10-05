@@ -16,7 +16,7 @@ public class Bishop extends Piece {
     public final static int[] CANIDATE_MOVE_VECTOR_COORDINATES = { -9, -7, 7, 9 };
 
     public Bishop(int piecePositon, Alliance pieceAlliance) {
-        super(piecePositon, pieceAlliance);
+        super(PieceType.BISHOP, piecePositon, pieceAlliance);
 
     }
 
