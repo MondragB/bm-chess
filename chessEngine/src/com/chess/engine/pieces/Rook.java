@@ -65,4 +65,9 @@ public class Rook extends Piece {
     private static boolean isEighthFileExlcusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGHTH_FILE[currentPosition] && (candidateOffset == 1);
     }
+
+    @Override
+    public Rook movePiece(final Move move) {
+        return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+    }
 }

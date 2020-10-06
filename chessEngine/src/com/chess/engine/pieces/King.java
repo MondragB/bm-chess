@@ -15,7 +15,7 @@ public class King extends Piece {
 
     private final static int[] CANDIDATE_MOVE_COORDINATES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-    public King(int piecePositon, Alliance pieceAlliance) {
+    public King(final int piecePositon, final Alliance pieceAlliance) {
         super(PieceType.KING, piecePositon, pieceAlliance);
     }
 
@@ -63,6 +63,11 @@ public class King extends Piece {
     private static boolean isEigHthFileExlcusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGHTH_FILE[currentPosition]
                 && (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
+    }
+
+    @Override
+    public King movePiece(final Move move) {
+        return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
     }
 
 }

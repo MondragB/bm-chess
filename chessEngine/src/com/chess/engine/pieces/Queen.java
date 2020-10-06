@@ -68,4 +68,9 @@ public class Queen extends Piece {
                 && ((candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9));
     }
 
+    @Override
+    public Queen movePiece(final Move move) {
+        return new Queen(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+    }
+
 }
