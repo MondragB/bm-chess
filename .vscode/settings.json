@@ -2,5 +2,11 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "dependancies/guava-18.0.jar"
-    ]
+    ],
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    }
 }
