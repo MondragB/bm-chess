@@ -14,8 +14,12 @@ public class Pawn extends Piece {
 
     private final static int[] CANDIDATE_MOVE_COORDINATE = { 7, 8, 9, 16 };
 
-    public Pawn(final int piecePositon, final Alliance pieceAlliance) {
-        super(PieceType.PAWN, piecePositon, pieceAlliance);
+    public Pawn(final int piecePosition, final Alliance pieceAlliance) {
+        super(PieceType.PAWN, piecePosition, pieceAlliance, true);
+    }
+
+    public Pawn(final int piecePosition, Alliance pieceAlliance, final boolean isFirstMove) {
+        super(PieceType.PAWN, piecePosition, pieceAlliance, isFirstMove);
     }
 
     @Override
@@ -32,42 +36,42 @@ public class Pawn extends Piece {
                 continue;
             }
 
-            if (currentCandidateOffset == 8 && board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
+            // REGULAR MOVE + TODO: PROMOTION
+            if (currentCandidateOffset == 8 && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
+                legalMoves.add(new Move.PawnMove(board, this, candidateDestinationCoordinate));
 
-                // TODO - Adding special pawn moves specifically promotion
-                legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                // PAWN JUMP
             } else if (currentCandidateOffset == 16 && this.isFirstMove()
-                    && (BoardUtils.SECOND_RANK[this.piecePositon] && this.pieceAlliance.isBlack())
-                    || (BoardUtils.SEVENTH_RANK[this.piecePositon] && this.pieceAlliance.isWhite())) {
-
+                    && ((BoardUtils.SECOND_RANK[this.piecePositon] && this.getPieceAlliance().isBlack())
+                            || (BoardUtils.SEVENTH_RANK[this.piecePositon] && this.getPieceAlliance().isWhite()))) {
                 final int behindCandidateDestinationCoordinate = this.piecePositon
                         + (this.pieceAlliance.getDirection() * 8);
                 if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied()
                         && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
-                    // TODO
-                    legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                    legalMoves.add(new Move.PawnJump(board, this, candidateDestinationCoordinate));
                 }
+
+                // PAWN ATTACK LEFT
             } else if (currentCandidateOffset == 7
                     && !((BoardUtils.EIGHTH_FILE[this.piecePositon] && this.pieceAlliance.isWhite())
                             || (BoardUtils.FIRST_FILE[this.piecePositon] && this.pieceAlliance.isBlack()))) {
-
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
-                        // TODO
-                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(
+                                new Move.PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
                     }
                 }
 
+                // PAWN ATTACK RIGHT
             } else if (currentCandidateOffset == 9
                     && !((BoardUtils.EIGHTH_FILE[this.piecePositon] && this.pieceAlliance.isBlack())
                             || (BoardUtils.FIRST_FILE[this.piecePositon] && this.pieceAlliance.isWhite()))) {
-
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
-                        // TODO
-                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
+                        legalMoves.add(
+                                new Move.PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
                     }
                 }
             }

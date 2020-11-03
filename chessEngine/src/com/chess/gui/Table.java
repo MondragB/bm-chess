@@ -2,7 +2,6 @@ package com.chess.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.SwingUtilities;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
@@ -21,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Table {
@@ -33,6 +34,8 @@ public class Table {
     private Tile destinationTile;
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
+
+    private boolean highlightLegalsMoves;
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
@@ -52,6 +55,7 @@ public class Table {
         this.chessBoard = Board.createStandardBoard();
         this.boardPanel = new BoardPanel();
         this.boardDirection = BoardDirection.NORMAL;
+        this.highlightLegalsMoves = false;
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
         this.gameFrame.setVisible(true);
@@ -100,6 +104,19 @@ public class Table {
             }
         });
         preferencesMenu.add(flipBoardMenuItem);
+
+        preferencesMenu.addSeparator();
+
+        final JCheckBoxMenuItem legalMoveHightlighterCheckbox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+        legalMoveHightlighterCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                highlightLegalsMoves = legalMoveHightlighterCheckbox.isSelected();
+            }
+        });
+
+        preferencesMenu.add(legalMoveHightlighterCheckbox);
+
         return preferencesMenu;
     }
 
@@ -161,6 +178,39 @@ public class Table {
             }
             validate();
             repaint();
+        }
+    }
+
+    public static class MoveLog {
+
+        private final List<Move> moves;
+
+        MoveLog() {
+            this.moves = new ArrayList<>();
+        }
+
+        public List<Move> getMoves() {
+            return this.moves;
+        }
+
+        public void addMove(final Move move) {
+            this.moves.add(move);
+        }
+
+        public int size() {
+            return this.moves.size();
+        }
+
+        public void clear() {
+            this.moves.clear();
+        }
+
+        public Move removeMove(int index) {
+            return this.moves.remove(index);
+        }
+
+        public boolean removeMove(final Move move) {
+            return this.moves.remove(move);
         }
     }
 
@@ -240,9 +290,24 @@ public class Table {
             validate();
         }
 
+        private void highlightLegals(final Board board) {
+            if (highlightLegalsMoves) {
+                for (final Move move : pieceLegalMoves(board)) {
+                    if (move.getDestinationCoordinate() == this.tileId) {
+                        try {
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
         public void drawTile(final Board board) {
             assignTileColor();
             assignTilePieceIcon(board);
+            highlightLegals(board);
             validate();
             repaint();
         }
@@ -271,5 +336,12 @@ public class Table {
                 setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }
+    }
+
+    private Collection<Move> pieceLegalMoves(final Board board) {
+        if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()) {
+            return humanMovedPiece.calculateLegalMoves(board);
+        }
+        return Collections.emptyList();
     }
 }
