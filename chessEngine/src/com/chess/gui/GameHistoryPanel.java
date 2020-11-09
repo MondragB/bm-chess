@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.gui.Table.MoveLog;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class GameHistoryPanel extends JPanel {
         this.setVisible(true);
     }
 
-    void redo(final Board board, final Table.MoveLog moveHistory) {
+    void redo(final Board board, final MoveLog moveHistory) {
 
         int currentRow = 0;
         this.model.clear();
@@ -54,6 +55,8 @@ public class GameHistoryPanel extends JPanel {
             final String moveText = lastMove.toString();
 
             if (lastMove.getMovedPiece().getPieceAlliance().isWhite()) {
+                this.model.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow, 0);
+            } else if (lastMove.getMovedPiece().getPieceAlliance().isBlack()) {
                 this.model.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow - 1, 1);
             }
         }
@@ -126,6 +129,7 @@ public class GameHistoryPanel extends JPanel {
 
             if (column == 0) {
                 currentRow.setWhiteMove((String) aValue);
+                fireTableRowsInserted(row, row);
             } else if (column == 1) {
                 currentRow.setBlackMove((String) aValue);
                 fireTableCellUpdated(row, column);
@@ -164,7 +168,7 @@ public class GameHistoryPanel extends JPanel {
         }
 
         public void setBlackMove(final String move) {
-            this.whiteMove = move;
+            this.blackMove = move;
         }
 
     }
