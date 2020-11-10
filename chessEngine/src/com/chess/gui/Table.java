@@ -2,7 +2,6 @@ package com.chess.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
